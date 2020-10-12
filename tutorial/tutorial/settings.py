@@ -119,3 +119,20 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# =========================
+# django-restframework 設定
+# =========================
+REST_FRAMEWORK = {
+    'PAGE_SIZE': 100,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_RENDERER_CLASSES': (
+        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+    ),
+}

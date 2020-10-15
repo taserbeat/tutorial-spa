@@ -33,11 +33,10 @@ const Polls: React.FC<PollsProps> = () => {
                 <Button onClick={fetchQuestions} className={"btn"} labelName={"fetch"} />
                 <Button onClick={clearQuestions} className={"btn"} labelName={"clear"} />
                 {
-                    questions.map((question) => {
+                    questions.map((q) => {
                         return <Card
-                            key={question.id}
-                            questionText={question.questionText}
-                            pubDate={question.pubDate}
+                            key={q.id}
+                            question={q}
                         />
                     })
                 }

@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 
 import * as QuestionAPI from '../api/QuestionAPI';
 
-type Props = {
+type CardProps = {
     question: QuestionAPI.TypeQuestion,
+    fetchQuestions: () => void,
 }
 
 const Wrapper = styled.div`  
@@ -39,7 +40,7 @@ const formatDateString = (date: string) => {
     return formatted;
 }
 
-const Card: React.FC<Props> = (props: Props) => {
+const Card: React.FC<CardProps> = (props: CardProps) => {
     const [selectedChoiceId, setSelectedChoiceId] = React.useState<string>();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +53,7 @@ const Card: React.FC<Props> = (props: Props) => {
 
         promise.then(res => {
             // todo: 投票APIのレスポンスを処理する
+            props.fetchQuestions();
         })
     }
 
@@ -76,11 +78,11 @@ const Card: React.FC<Props> = (props: Props) => {
                 }
                 {
                     props.question.choices.length > 0 &&
-                    <button className={'vote-btn'} onClick={handleVote}>投票</button>
+                    <button className={'vote-btn'} onClick={handleVote} disabled={selectedChoiceId === undefined}>投票</button>
                 }
                 <DateLabel>{formatDateString(props.question.pubDate)}</DateLabel>
             </Wrapper>
-        </div>
+        </div >
     )
 }
 

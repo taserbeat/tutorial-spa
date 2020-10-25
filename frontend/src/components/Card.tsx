@@ -8,7 +8,7 @@ type CardProps = {
     question: QuestionAPI.TypeQuestion,
     fetchQuestions: () => void,
     lastChangedQuestionId: number | undefined,
-    setLastChanagedQuestionId: React.Dispatch<React.SetStateAction<number | undefined>>
+    setLastChanagedQuestionId: React.Dispatch<React.SetStateAction<number | undefined>>,
 }
 
 const Wrapper = styled.div`  

@@ -12,7 +12,7 @@ const useQuestions = (initial: QuestionAPI.TypeQuestion[] = []) => {
     const [questions, setQuestions] = useState<QuestionAPI.TypeQuestion[]>(initial);
     const clearQuestions = () => setQuestions([]);
 
-    return { questions, setQuestions, clearQuestions };
+    return { questions, setQuestions, clearQuestions } as const;
 }
 
 // todo: 投票ボタンの有効/無効のレンダリングを最適化する

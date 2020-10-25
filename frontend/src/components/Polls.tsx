@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import Button from './Button';
 import * as QuestionAPI from '../api/QuestionAPI';
@@ -8,24 +8,32 @@ interface PollsProps {
 
 }
 
+const useQuestions = (initial: QuestionAPI.TypeQuestion[] = []) => {
+    const [questions, setQuestions] = useState<QuestionAPI.TypeQuestion[]>(initial);
+    const clearQuestions = () => setQuestions([]);
+
+    return { questions, setQuestions, clearQuestions };
+}
+
 const Polls: React.FC<PollsProps> = () => {
-    const [questions, setQuestions] = React.useState<QuestionAPI.TypeQuestion[]>([]);
+    const { questions, setQuestions, clearQuestions } = useQuestions([]);
 
     const fetchQuestions = () => {
-        const promise = QuestionAPI.Client.getQuestions();
-        promise.then((response) => {
-            setQuestions(response.data.results);
-        });
-    }
-
-    const clearQuestions = () => {
-        setQuestions([]);
+        QuestionAPI.Client.fetchQuestions()
+            .then(response => {
+                setQuestions(response.data.results);
+            });
     }
 
     useEffect(() => {
-        fetchQuestions();
-    }, [setQuestions]);
+        const fetchQuestionsSync = async () => {
+            const res = await QuestionAPI.Client.fetchQuestions();
+            setQuestions(res.data.results);
+        };
+        fetchQuestionsSync();
+    }, []);
 
+    // todo: 二重でレンダリングが行われる原因を調査
     return (
         <div>
             polls
@@ -33,11 +41,8 @@ const Polls: React.FC<PollsProps> = () => {
                 <Button onClick={fetchQuestions} className={"btn"} labelName={"fetch"} />
                 <Button onClick={clearQuestions} className={"btn"} labelName={"clear"} />
                 {
-                    questions.map((q) => {
-                        return <Card
-                            key={q.id}
-                            question={q}
-                        />
+                    questions.map(q => {
+                        return <Card key={q.id} question={q} />
                     })
                 }
             </div>

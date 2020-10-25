@@ -34,20 +34,25 @@ const DateLabel = styled.div`
   color: #fff;  
 `
 
+const formatDateString = (date: string) => {
+    const formatted = moment(date).locale('ja').format('YYYY年MM月DD日(ddd) HH時mm分ss秒');
+    return formatted;
+}
+
 const Card: React.FC<Props> = (props: Props) => {
     const [selectedChoiceId, setSelectedChoiceId] = React.useState<string>();
-
-    const formatDateString = (date: string) => {
-        const formatted = moment(date).locale('ja').format('YYYY年MM月DD日(ddd) HH時mm分ss秒');
-        return formatted;
-    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedChoiceId(e.target.value);
     }
 
     const handleVote = () => {
+        if (selectedChoiceId === undefined) return;
+        const promise = QuestionAPI.Client.vote(selectedChoiceId);
 
+        promise.then(res => {
+            // todo: 投票APIのレスポンスを処理する
+        })
     }
 
     return (

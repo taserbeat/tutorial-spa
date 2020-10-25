@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// IGetQuestions
 export type TypeChoice = {
     id: number,
     question: number,
@@ -29,8 +30,17 @@ export class Client {
         return Client.baseUrl;
     }
 
-    static getQuestions = () => {
+    // Questionリストを取得する
+    static fetchQuestions = () => {
         const promise = axios.get<IGetQuestions>(Client.baseUrl);
+
+        return promise;
+    }
+
+    // 投票する
+    static vote = (choiceId: string) => {
+        const url = `http://localhost:8000/api/1.0/choices/${choiceId}/vote/`;
+        const promise = axios.post<TypeChoice>(url);
 
         return promise;
     }

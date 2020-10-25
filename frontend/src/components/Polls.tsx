@@ -15,8 +15,10 @@ const useQuestions = (initial: QuestionAPI.TypeQuestion[] = []) => {
     return { questions, setQuestions, clearQuestions };
 }
 
+// todo: 投票ボタンの有効/無効のレンダリングを最適化する
 const Polls: React.FC<PollsProps> = () => {
     const { questions, setQuestions, clearQuestions } = useQuestions([]);
+    const [lastChangedQuestionId, setLastChangedQuestionId] = useState<number>();
 
     const fetchQuestions = () => {
         QuestionAPI.Client.fetchQuestions()
@@ -42,7 +44,13 @@ const Polls: React.FC<PollsProps> = () => {
                 <Button onClick={clearQuestions} className={"btn"} labelName={"clear"} />
                 {
                     questions.map(q => {
-                        return <Card key={q.id} question={q} fetchQuestions={fetchQuestions} />
+                        return <Card
+                            key={q.id}
+                            question={q}
+                            fetchQuestions={fetchQuestions}
+                            lastChangedQuestionId={lastChangedQuestionId}
+                            setLastChanagedQuestionId={setLastChangedQuestionId}
+                        />
                     })
                 }
             </div>

@@ -25,21 +25,25 @@ export interface IGetQuestions {
 
 
 export class Client {
-    private static baseUrl = 'http://localhost:8000/api/1.0/questions/';
+    // fix: リクエスト先のURLを開発/テスト/本番の各環境に柔軟に切り替えるような設定に変更
+    private static baseUrl =
+        process.env.NODE_ENV === 'production' ? '/api/1.0' : 'http://localhost:8000/api/1.0';
+
     static getBaseUrl = () => {
         return Client.baseUrl;
     }
 
     // Questionリストを取得する
     static fetchQuestions = () => {
-        const promise = axios.get<IGetQuestions>(Client.baseUrl);
+        const url = Client.baseUrl + '/questions/';
+        const promise = axios.get<IGetQuestions>(url);
 
         return promise;
     }
 
     // 投票する
     static vote = (choiceId: string) => {
-        const url = `http://localhost:8000/api/1.0/choices/${choiceId}/vote/`;
+        const url = `${Client.baseUrl}/choices/${choiceId}/vote/`;
         const promise = axios.post<TypeChoice>(url);
 
         return promise;

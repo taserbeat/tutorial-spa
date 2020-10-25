@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 
@@ -7,6 +7,8 @@ import * as QuestionAPI from '../api/QuestionAPI';
 type CardProps = {
     question: QuestionAPI.TypeQuestion,
     fetchQuestions: () => void,
+    lastChangedQuestionId: number | undefined,
+    setLastChanagedQuestionId: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
 const Wrapper = styled.div`  
@@ -45,6 +47,7 @@ const Card: React.FC<CardProps> = (props: CardProps) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedChoiceId(e.target.value);
+        props.setLastChanagedQuestionId(props.question.id);
     }
 
     const handleVote = () => {
@@ -52,7 +55,6 @@ const Card: React.FC<CardProps> = (props: CardProps) => {
         const promise = QuestionAPI.Client.vote(selectedChoiceId);
 
         promise.then(res => {
-            // todo: 投票APIのレスポンスを処理する
             props.fetchQuestions();
         })
     }
@@ -70,7 +72,7 @@ const Card: React.FC<CardProps> = (props: CardProps) => {
                                 key={choiceId}
                                 id={choiceId}
                                 value={choice.id}
-                                checked={choiceId === selectedChoiceId}
+                                checked={choiceId === selectedChoiceId && props.question.id === props.lastChangedQuestionId}
                                 onChange={handleChange} />
                             <label htmlFor={choiceId}>{`${choice.choiceText}   投票数: ${choice.votes}`}</label>
                         </div>
@@ -78,7 +80,11 @@ const Card: React.FC<CardProps> = (props: CardProps) => {
                 }
                 {
                     props.question.choices.length > 0 &&
-                    <button className={'vote-btn'} onClick={handleVote} disabled={selectedChoiceId === undefined}>投票</button>
+                    <button
+                        className={'vote-btn'}
+                        onClick={handleVote}
+                        disabled={selectedChoiceId === undefined || props.lastChangedQuestionId !== props.question.id}
+                    >投票</button>
                 }
                 <DateLabel>{formatDateString(props.question.pubDate)}</DateLabel>
             </Wrapper>

@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// IGetQuestions
 export type TypeChoice = {
     id: number,
     question: number,
@@ -16,7 +15,7 @@ export type TypeQuestion = {
 }
 
 
-export interface IGetQuestions {
+export interface IFetchQuestions {
     count: number,
     next: number | null,
     previous: number | null,
@@ -26,25 +25,25 @@ export interface IGetQuestions {
 
 export class Client {
     // fix: リクエスト先のURLを開発/テスト/本番の各環境に柔軟に切り替えるような設定に変更
-    private static baseUrl =
+    static readonly baseUrl =
         process.env.NODE_ENV === 'production' ? '/api/1.0' : 'http://localhost:8000/api/1.0';
 
-    static getBaseUrl = () => {
-        return Client.baseUrl;
-    }
+    private static client = axios.create({
+        baseURL: Client.baseUrl,
+    })
 
     // Questionリストを取得する
     static fetchQuestions = () => {
-        const url = Client.baseUrl + '/questions/';
-        const promise = axios.get<IGetQuestions>(url);
+        const url = '/questions/';
+        const promise = Client.client.get<IFetchQuestions>(url);
 
         return promise;
     }
 
     // 投票する
     static vote = (choiceId: string) => {
-        const url = `${Client.baseUrl}/choices/${choiceId}/vote/`;
-        const promise = axios.post<TypeChoice>(url);
+        const url = `/choices/${choiceId}/vote/`;
+        const promise = Client.client.post<TypeChoice>(url);
 
         return promise;
     }

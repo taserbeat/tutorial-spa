@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Button from './Button';
 import * as QuestionAPI from '../api/QuestionAPI';
 import Card from './Card';
+import Clock from './Clock';
 
 interface PollsProps {
 
@@ -54,6 +55,7 @@ const Polls: React.FC<PollsProps> = () => {
                     })
                 }
             </div>
+            <Clock />
         </div>
     )
 }

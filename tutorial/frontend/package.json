@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && mv -f build static && mkdir -p templates && mv static/index.html templates/index.html",
+    "build": "react-scripts build && mkdir -p static && rm -r static && mv build static && mkdir -p templates && mv static/index.html templates/index.html",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

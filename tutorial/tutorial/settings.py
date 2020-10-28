@@ -135,4 +135,9 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser'
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # インストールしたJWTライブラリ
+        'rest_framework.authentication.SessionAuthentication',  # デフォルトの認証方式
+        'rest_framework.authentication.BasicAuthentication'  # デフォルトの認証方式
+    ),
 }

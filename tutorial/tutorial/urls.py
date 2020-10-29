@@ -17,4 +17,5 @@ api_urlpatterns = [
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/1.0/', include(api_urlpatterns)),  # api/1.0/としてapi一覧を登録
+    path('', include('frontend.urls')),
 ]

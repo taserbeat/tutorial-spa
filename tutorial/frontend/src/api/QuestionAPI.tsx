@@ -1,4 +1,4 @@
-import axios from 'axios';
+import BaseAPIClient from './BaseAPIClient'
 
 export type TypeChoice = {
     id: number,
@@ -23,14 +23,7 @@ export interface IFetchQuestions {
 }
 
 
-export class Client {
-    // fix: リクエスト先のURLを開発/テスト/本番の各環境に柔軟に切り替えるような設定に変更
-    static readonly baseUrl =
-        process.env.NODE_ENV === 'production' ? '/api/1.0' : 'http://localhost:8000/api/1.0';
-
-    private static client = axios.create({
-        baseURL: Client.baseUrl,
-    })
+export class Client extends BaseAPIClient {
 
     // Questionリストを取得する
     static fetchQuestions = () => {

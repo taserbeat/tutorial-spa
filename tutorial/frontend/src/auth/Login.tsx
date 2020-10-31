@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Alert, FormControl } from 'react-bootstrap';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+
 import User from './User';
+import * as AuthorizeAPI from '../api/AuthorizeAPI';
 
 // https://qiita.com/taneba/items/b50078e1ac9d1971d413
 interface LoginProps extends RouteComponentProps {
@@ -20,14 +22,20 @@ const defaultLoginForm: LoginForm = {
     errMessage: ''
 }
 
-const useAuthenticate = (initial: LoginForm = defaultLoginForm) => {
+const useLoginForm = (initial: LoginForm = defaultLoginForm) => {
     const [loginForm, setLoginForm] = useState<LoginForm>(initial);
+    const setErrorMsg = () => {
+        setLoginForm({
+            ...initial,
+            errMessage: 'メールアドレスまたはパスワードが違います',
+        });
+    }
 
-    return { loginForm, setLoginForm };
+    return { loginForm, setLoginForm, setErrorMsg };
 }
 
 const Login: React.FC<LoginProps> = (props: LoginProps) => {
-    const { loginForm, setLoginForm } = useAuthenticate();
+    const { loginForm, setLoginForm, setErrorMsg } = useLoginForm();
 
     // https://kamocyc.hatenablog.com/entry/2020/08/04/191543
     const handleChange = (e: React.ChangeEvent<typeof FormControl & HTMLInputElement>) => {
@@ -39,7 +47,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
             await User.login(loginForm.email, loginForm.password);
             props.history.push({ pathname: 'polls' });
         } catch (e) {
-            setLoginForm({ ...loginForm, errMessage: 'メールアドレスまたはパスワードが違います' });
+            setErrorMsg();
         }
     }
 
@@ -73,7 +81,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
                     </Form.Group>
                     <Button variant="primary" type="button" onClick={click}>
                         ログイン
-            </Button>
+                    </Button>
                 </Form>
             </Row>
         </Container>

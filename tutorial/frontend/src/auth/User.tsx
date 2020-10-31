@@ -1,3 +1,5 @@
+import * as AuthorizeAPI from "../api/AuthorizeAPI";
+
 const isLoggedInKey = 'isLoggedIn';
 
 class User {
@@ -23,13 +25,16 @@ class User {
         return null;
     };
 
-    login = async (email: string, password: string) => {
+    login = async (username: string, password: string) => {
         // todo: ログイン処理を細かく実装する
         // ログイン処理
         // ログインエラー時には、falseを返してもいいし、returnを別の用途で利用したかったら
         // 例外を出しして呼び出し元でcatchしてもいいかと思います。
 
-        this.set(isLoggedInKey, 'true');
+        await AuthorizeAPI.AuthorizeClient.login(username, password).then((response) => {
+            // ログイン成功時の処理
+            this.set(isLoggedInKey, 'true');
+        });
 
         return true;
     };

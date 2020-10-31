@@ -3,7 +3,6 @@ import { Form, Button, Container, Row, Alert, FormControl } from 'react-bootstra
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import User from './User';
-import * as AuthorizeAPI from '../api/AuthorizeAPI';
 
 // https://qiita.com/taneba/items/b50078e1ac9d1971d413
 interface LoginProps extends RouteComponentProps {

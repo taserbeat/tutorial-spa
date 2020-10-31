@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
 import Button from './Button';
 import * as QuestionAPI from '../api/QuestionAPI';
@@ -36,7 +37,6 @@ const Polls: React.FC<PollsProps> = () => {
         fetchQuestionsSync();
     }, []);
 
-    // todo: 二重でレンダリングが行われる原因を調査
     return (
         <div>
             polls
@@ -56,6 +56,7 @@ const Polls: React.FC<PollsProps> = () => {
                 }
             </div>
             <Clock />
+            <Link to="/logout">ログアウト</Link>
         </div>
     )
 }

@@ -142,3 +142,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication'  # デフォルトの認証方式
     ),
 }
+
+JWT_AUTH = {
+    # トークンの期限を無効に設定
+    'JWT_VERIFY_EXPIRATION': False,
+}
+
+REST_USE_JWT = True

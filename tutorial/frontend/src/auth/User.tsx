@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import * as AuthorizeAPI from "../api/AuthorizeAPI";
 
 const isLoggedInKey = 'isLoggedIn';
@@ -34,6 +36,7 @@ class User {
         await AuthorizeAPI.AuthorizeClient.login(username, password).then((response) => {
             // ログイン成功時の処理
             this.set(isLoggedInKey, 'true');
+            axios.defaults.headers.common['Authorization'] = `JWT ${response.data.token}`;
         });
 
         return true;
